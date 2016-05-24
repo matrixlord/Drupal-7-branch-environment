@@ -4,11 +4,11 @@
 #
 
 # Variables.
-dbUser=root
-dbPass=root
-dbPrefix=hrmeta_
+dbUser={rootUser}
+dbPass={rootPass}
+dbPrefix={projectPrefix}
 # User to give access to.
-dbUserAccess=hrmeta_main
+dbUserAccess={Drupal7DbUser}
 
 # Don't change anything below this line.
 # ____________________________________
