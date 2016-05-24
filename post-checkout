@@ -48,11 +48,14 @@ settingsFolder=sites/default
 sfPrevString=$dbPrefix$prevBranch
 sfNewString=$dbPrefix$currentBranch
 
-cd sites/default
+cd $settingsFolder
 # Check file exists.
 if [ ! -f "settings.php" ]; then
 	echo 'settings.php file not found!'
 else
+	# Change folder permsssions.
+	chmod 755 $settingsFolder
+
 	# Check if backup for master branch exists.
 	if [ ! -f "settings_master.php" ]; then
 		cp settings.php settings_master.php

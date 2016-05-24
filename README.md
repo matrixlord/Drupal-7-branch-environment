@@ -20,7 +20,9 @@ settings.php files for each branch.
 * Copy "post-checkout" file into ".git/hooks/" folder in your Drupal 7 project
 * Change inside the file "dbPrefix" variable to your DB prefix
   e.g. "my_new_eshop_"
-* Set in "post-checkout" file the root username and password
+* Make post-checkout file executable: chmod +x post-checkout
+* Set in "post-checkout" file the root username and password, dbUser and dbPass
+  respectively
 * Set in "post-checkout" file the user that is connected to the DB from Drupal
   in "dbUserAccess". This is the DB user that Drupal uses to connect to the DB
 
