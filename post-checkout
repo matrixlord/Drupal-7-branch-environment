@@ -4,11 +4,11 @@
 #
 
 # Variables.
-dbUser={rootUser}
-dbPass={rootPass}
-dbPrefix={projectPrefix}
+dbUser=root
+dbPass=root
+dbPrefix=hrmeta_
 # User to give access to.
-dbUserAccess={Drupal7DbUser}
+dbUserAccess=hrmeta
 
 # Don't change anything below this line.
 # ____________________________________
@@ -26,12 +26,16 @@ currentBranch=`git rev-parse --abbrev-ref HEAD`
 echo Previous branch: $prevBranch \(hardcoded\)
 echo Current branch: $currentBranch
 
+# Sanitize current branch variable.
+currentBranch=${currentBranch/"-"/"_"}
+
 # If db does not exist, create it.
-if ! `mysql -u $dbUser -p$dbPass -e 'USE $dbPrefix$currentBranch'`; then
+mysqlExists=$(mysql -u $dbUser -p$dbPass --skip-column-names -e "SHOW DATABASES LIKE '$dbPrefix$currentBranch'")
+if [ "$mysqlExists" != "$dbPrefix$currentBranch" ]; then
 	currentTimestamp=$(date +%s)
 
 	echo "DB does not exist. Trying to create it."
-	mysql -u $dbUser -p$dbPass -e 'CREATE DATABASE $dbPrefix$currentBranch'
+	mysql -u $dbUser -p$dbPass -e "CREATE DATABASE $dbPrefix$currentBranch"
 
 	# Copy from current branch db.
 	mysqldump -u $dbUser -p$dbPass $dbPrefix$prevBranch > $currentTimestamp.sql
@@ -39,7 +43,7 @@ if ! `mysql -u $dbUser -p$dbPass -e 'USE $dbPrefix$currentBranch'`; then
 	rm $currentTimestamp.sql
 
 	# Grant privileges.
-	mysql -u $dbUser -p$dbPass -e 'GRANT ALL PRIVILEGES ON $dbPrefix$currentBranch.* TO '$dbUserAccess'@'localhost' WITH GRANT OPTION;'
+	mysql -u $dbUser -p$dbPass -e "GRANT ALL PRIVILEGES ON $dbPrefix$currentBranch.* TO '$dbUserAccess'@'localhost' WITH GRANT OPTION;"
 fi
 
 # Change DB in settings file.
@@ -54,7 +58,7 @@ if [ ! -f "settings.php" ]; then
 	echo 'settings.php file not found!'
 else
 	# Change folder permsssions.
-	chmod 755 $settingsFolder
+	chmod 755 .
 
 	# Check if backup for master branch exists.
 	if [ ! -f "settings_master.php" ]; then
