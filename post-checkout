@@ -4,11 +4,11 @@
 #
 
 # Variables.
-dbUser=root
-dbPass=root
-dbPrefix=hrmeta_
+dbUser={root}
+dbPass={rootpass}
+dbPrefix=
 # User to give access to.
-dbUserAccess=hrmeta
+dbUserAccess=
 
 # Don't change anything below this line.
 # ____________________________________
@@ -27,7 +27,7 @@ echo Previous branch: $prevBranch \(hardcoded\)
 echo Current branch: $currentBranch
 
 # Sanitize current branch variable.
-currentBranch=${currentBranch/"-"/"_"}
+currentBranch=$(echo $currentBranch | tr '-' '_')
 
 # If db does not exist, create it.
 mysqlExists=$(mysql -u $dbUser -p$dbPass --skip-column-names -e "SHOW DATABASES LIKE '$dbPrefix$currentBranch'")
