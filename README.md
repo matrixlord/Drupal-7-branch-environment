@@ -26,4 +26,5 @@ settings.php files for each branch.
 * Set in "post-checkout" file the user that is connected to the DB from Drupal
   in "dbUserAccess". This is the DB user that Drupal uses to connect to the DB
 
+
 [Sponsored by Human Factor](http://www.humanfactor.gr)
